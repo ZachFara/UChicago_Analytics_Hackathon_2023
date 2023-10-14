@@ -1,9 +1,18 @@
 import json
 import asyncio
 import warnings
+import time
+import csv
 
 from pyensign.ensign import Ensign
 from pyensign.api.v1beta1.ensign_pb2 import Nack
+
+# Open the CSV
+fieldnames = ['game', 'id', 'count', 'timestamp']
+
+csvfile = open('data/steam_data_with_time.csv', 'a', newline='')
+
+
 
 
 # TODO Python>3.10 needs to ignore DeprecationWarning: There is no current event loop
@@ -43,7 +52,16 @@ class SteamSubscriber:
             await event.nack(Nack.Code.UNKNOWN_TYPE)
             return
 
+        # Handle our new data
+        current_time = time.strftime("%H:%M:%S")    
         print("New steam report received:", data)
+        
+
+        # Create a CSV-formatted string
+        csv_line = f"{data['game']},{data['id']},{data['count']},{current_time}\n"
+        
+        # Write the line to the file
+        csvfile.write(csv_line)
         await event.ack()
 
     async def subscribe(self):

@@ -114,10 +114,18 @@ class SteamPublisher:
     def create_event(self, response, game_id, game_name):
         if game_name == "":
             game_name = "N/A"
+            
+        # Make the count actually the count
+        if response['response']['result'] == 42:
+            count = "N/A" # Signifying NA
+        else:
+            count = response['response']['player_count']
+        
+                    
         data = {
             "game": game_name,
             "id": game_id,
-            "count": response["response"]["result"]
+            "count": count
         }
 
         return Event(json.dumps(data).encode("utf-8"), mimetype="application/json")
@@ -150,6 +158,8 @@ class SteamPublisher:
 
                 # Convert the response to an event and publish it
                 event = self.create_event(response, game_id, game_name)
+                
+                
                 await self.ensign.publish(
                     self.topic,
                     event,
