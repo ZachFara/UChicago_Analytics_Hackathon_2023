@@ -183,6 +183,7 @@ class SteamPublisher:
                         print(f"Adding {game_id} to the ignore list")
                         game_id_set.add(game_id)
                         f_write.write(f"{game_id}\n")
+                        f_write.flush()
                 
                 print(f"Request: {request}")
                 print(f"Response: {response}")

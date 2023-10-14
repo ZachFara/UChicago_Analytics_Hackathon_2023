@@ -65,6 +65,7 @@ class SteamSubscriber:
         
         # Write the line to the file
         csvfile.write(csv_line)
+        csvfile.flush()
         await event.ack()
 
     async def subscribe(self):
