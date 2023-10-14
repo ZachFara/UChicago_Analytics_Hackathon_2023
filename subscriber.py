@@ -56,7 +56,12 @@ class SteamSubscriber:
         current_time = time.strftime("%H:%M:%S")    
         print("New steam report received:", data)
         
+        # Remove any commas in the data dictionary
+        for key in data.keys():
+            if isinstance(data[key], str):
+                data[key] = data[key].replace(',','')
 
+        
         # Create a CSV-formatted string
         csv_line = f"{data['game']},{data['id']},{data['count']},{current_time}\n"
         
