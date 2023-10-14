@@ -2,6 +2,7 @@ import os
 import json
 import asyncio
 import warnings
+import csv
 
 import requests
 from datetime import datetime
@@ -10,6 +11,24 @@ from pyensign.ensign import Ensign
 
 # TODO Python>3.10 needs to ignore DeprecationWarning: There is no current event loop
 warnings.filterwarnings("ignore")
+
+# Set an environment variable
+os.environ['STEAM_API_KEY'] = "DF45B97ACE79B4D7682803ED5962E2DD"
+
+
+# Load in our hash set
+game_id_set = set()
+f_read = open('data/games_to_ignore.csv', 'r')
+reader = csv.reader(f_read)
+next(reader, None)  # Skip the header
+for row in reader:
+    game_id_set.add(row[0])
+f_read.close()
+
+# Load this in to add new lines to it
+f_write = open('data/games_to_ignore.csv', 'a', newline='')
+
+
 
 # GLOBAL VARIABLES
 GAME_LIST_ENDPOINT = "https://api.steampowered.com/ISteamApps/GetAppList/v2/"
@@ -150,8 +169,20 @@ class SteamPublisher:
                 if game_id is None:
                     continue
 
+                # If the game_id is in the list to ignore, then ignore it
+                if game_id in game_id_set:
+                    print(f"Ignored {game_id}")
+                    continue
+
                 request = self.format_query(game_id)
                 response = requests.get(request).json()
+                
+                # If the player count == 0, add the id to our list of games we ignore
+                if "player_count" in response['response']:
+                    if response['response']['player_count'] == 0:
+                        print(f"Adding {game_id} to the ignore list")
+                        game_id_set.add(game_id)
+                        f_write.write(f"{game_id}\n")
                 
                 print(f"Request: {request}")
                 print(f"Response: {response}")

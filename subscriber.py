@@ -8,8 +8,6 @@ from pyensign.ensign import Ensign
 from pyensign.api.v1beta1.ensign_pb2 import Nack
 
 # Open the CSV
-fieldnames = ['game', 'id', 'count', 'timestamp']
-
 csvfile = open('data/steam_data_with_time.csv', 'a', newline='')
 
 
