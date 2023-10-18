@@ -21,7 +21,7 @@ os.environ['STEAM_API_KEY'] = "DF45B97ACE79B4D7682803ED5962E2DD"
 
 # GLOBAL VARIABLES
 REVIEWS_QUERY = "https://store.steampowered.com/appreviews/"
-OPTIONS = "?json=1&language=all&purchase_type=all&language=english"
+OPTIONS = "?json=1&language=all&purchase_type=all&language=english&filter=recent"
 GAME_LIST_ENDPOINT = "https://api.steampowered.com/ISteamApps/GetAppList/v2/"
 
 
