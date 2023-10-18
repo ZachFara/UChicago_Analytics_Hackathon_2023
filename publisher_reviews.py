@@ -125,8 +125,10 @@ class SteamPublisher:
         if game_name == "":
             game_name = "N/A"
             
+        print(response['query_summary'])
+            
         # Make the count actually the count
-        if response['query_summary']['total_reviews'] > 0:
+        if 'total_reviews' in response['query_summary']:
             review = response['reviews'][0]['review']
             timestamp_created = response['reviews'][0]['timestamp_created']
             author_playtime = response['reviews'][0]['author']['playtime_forever']
@@ -144,7 +146,7 @@ class SteamPublisher:
         data = {
             "game": game_name,
             "id": game_id,
-            "num_reviews": response['query_summary']['total_reviews'],
+            "num_reviews": response['query_summary']['num_reviews'],
             "review": review,
             "timestamp_created": timestamp_created,
             "time_retrieved": f'{datetime.now():%Y-%m-%d %H:%M:%S}',

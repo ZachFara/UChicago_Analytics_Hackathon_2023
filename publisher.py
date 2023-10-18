@@ -128,7 +128,9 @@ class SteamPublisher:
         if all_games is None:
             raise Exception("missing app names in Steam API response")
 
-        return all_games
+        all_games_v2 = [d for d in all_games if d["appid"] not in game_id_set]
+
+        return all_games_v2
 
     def create_event(self, response, game_id, game_name):
         if game_name == "":

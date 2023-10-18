@@ -8,7 +8,7 @@ while true; do
     pid2=$!
 
     # Let them run for 30 minutes (1800 seconds)
-    sleep 1800
+    sleep 900
 
     # Kill the processes
     kill $pid1 $pid2
